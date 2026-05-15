@@ -1,0 +1,42 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg
+*.egg-info/
+dist/
+build/
+*.so
+.eggs/
+.env
+.env.docker
+backend/.env
+backend/venv/
+backend/env/
+backend/staticfiles/
+backend/db.sqlite3
+backend/*.sqlite3
+*.log
+
+# Node / React
+node_modules/
+frontend/dist/
+frontend/.env
+frontend/node_modules/
+.npm
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Misc
+*.bak
+*.tmp

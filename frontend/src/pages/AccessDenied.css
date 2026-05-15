@@ -1,0 +1,166 @@
+.denied-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+.denied-orbs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.denied-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+
+[data-theme="night"] .denied-orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(220,38,38,0.2) 0%, transparent 70%);
+  top: -100px; right: -80px;
+  animation: float 10s ease-in-out infinite;
+}
+
+[data-theme="night"] .denied-orb-2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(147,51,234,0.2) 0%, transparent 70%);
+  bottom: -80px; left: -60px;
+  animation: floatReverse 12s ease-in-out infinite;
+}
+
+[data-theme="day"] .denied-orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(254,202,202,0.5) 0%, transparent 70%);
+  top: -100px; right: -80px;
+  animation: float 10s ease-in-out infinite;
+}
+
+[data-theme="day"] .denied-orb-2 {
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(196,181,253,0.4) 0%, transparent 70%);
+  bottom: -80px; left: -60px;
+  animation: floatReverse 12s ease-in-out infinite;
+}
+
+.denied-card {
+  position: relative;
+  z-index: 1;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: 52px 44px;
+  max-width: 520px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(220,38,38,0.12);
+  animation: slideUp 0.5s cubic-bezier(0.34,1.2,0.64,1);
+}
+
+/* ── Shield Icon ─────────────────────────────────────────────── */
+.denied-shield {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 24px;
+}
+
+.shield-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #dc2626, #ef4444);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 30px rgba(220,38,38,0.5), 0 0 60px rgba(220,38,38,0.2);
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+.shield-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(220,38,38,0.4);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 2.5s ease-out infinite;
+}
+
+.ring-1 { width: 120px; height: 120px; animation-delay: 0s; }
+.ring-2 { width: 150px; height: 150px; animation-delay: 0.5s; }
+.ring-3 { width: 180px; height: 180px; animation-delay: 1s; }
+
+@keyframes ripple {
+  0%   { opacity: 0.8; transform: translate(-50%, -50%) scale(0.85); }
+  100% { opacity: 0;   transform: translate(-50%, -50%) scale(1.2); }
+}
+
+/* ── Text ────────────────────────────────────────────────────── */
+.denied-code {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, #dc2626, #f87171);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.04em;
+  margin-bottom: 8px;
+}
+
+.denied-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+  letter-spacing: -0.01em;
+}
+
+.denied-subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0 auto 28px;
+}
+
+.denied-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+  border-radius: var(--radius-full);
+  margin: 0 auto 28px;
+  opacity: 0.6;
+}
+
+.denied-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.denied-help {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+@media (max-width: 480px) {
+  .denied-card { padding: 36px 24px; }
+  .denied-code { font-size: 60px; }
+}

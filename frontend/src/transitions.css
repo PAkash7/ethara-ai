@@ -1,0 +1,109 @@
+/* ─────────────────────────────────────────────────────────────
+ * Site-wide transition & animation utilities
+ * ─────────────────────────────────────────────────────────────
+ */
+
+/* ── Page entrance ───────────────────────────────────────────── */
+.page-enter {
+  animation: pageEnter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Card hover lift (apply to .card automatically) ─────────── */
+.card {
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition),
+    background var(--transition-slow);
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Button press ripple ─────────────────────────────────────── */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.12);
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: inherit;
+}
+.btn:active::after { opacity: 1; }
+
+/* ── Table row hover ─────────────────────────────────────────── */
+.table-wrapper table tbody tr {
+  transition: background var(--transition);
+}
+
+/* ── Stat cards stagger entrance ─────────────────────────────── */
+.stats-grid .card:nth-child(1) { animation: slideUp 0.4s 0.05s both; }
+.stats-grid .card:nth-child(2) { animation: slideUp 0.4s 0.10s both; }
+.stats-grid .card:nth-child(3) { animation: slideUp 0.4s 0.15s both; }
+.stats-grid .card:nth-child(4) { animation: slideUp 0.4s 0.20s both; }
+.stats-grid .card:nth-child(5) { animation: slideUp 0.4s 0.25s both; }
+
+.admin-stats-grid .admin-stat:nth-child(1) { animation: slideUp 0.4s 0.04s both; }
+.admin-stats-grid .admin-stat:nth-child(2) { animation: slideUp 0.4s 0.08s both; }
+.admin-stats-grid .admin-stat:nth-child(3) { animation: slideUp 0.4s 0.12s both; }
+.admin-stats-grid .admin-stat:nth-child(4) { animation: slideUp 0.4s 0.16s both; }
+.admin-stats-grid .admin-stat:nth-child(5) { animation: slideUp 0.4s 0.20s both; }
+.admin-stats-grid .admin-stat:nth-child(6) { animation: slideUp 0.4s 0.24s both; }
+
+/* ── Project / Task cards stagger ───────────────────────────── */
+.projects-grid .project-card:nth-child(1)  { animation: slideUp 0.4s 0.05s both; }
+.projects-grid .project-card:nth-child(2)  { animation: slideUp 0.4s 0.10s both; }
+.projects-grid .project-card:nth-child(3)  { animation: slideUp 0.4s 0.15s both; }
+.projects-grid .project-card:nth-child(4)  { animation: slideUp 0.4s 0.20s both; }
+.projects-grid .project-card:nth-child(5)  { animation: slideUp 0.4s 0.25s both; }
+.projects-grid .project-card:nth-child(6)  { animation: slideUp 0.4s 0.30s both; }
+.projects-grid .project-card:nth-child(n+7){ animation: slideUp 0.4s 0.35s both; }
+
+/* ── Skeleton shimmer (loading state) ───────────────────────── */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-elevated) 25%,
+    var(--bg-card) 50%,
+    var(--bg-elevated) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Focus ring for accessibility ────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--purple-500);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Smooth scrollbar ────────────────────────────────────────── */
+* { scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--purple-500); }

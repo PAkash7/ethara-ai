@@ -1,0 +1,460 @@
+/* ═══════════════════════════════════════════════════════════════
+   Auth Pages — LoginPage & RegisterPage
+   Cinematic purple night / lavender day theme
+   British serif typography (Playfair Display)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Page Wrapper ─────────────────────────────────────────────── */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-base);
+  transition: background var(--transition-slow);
+}
+
+/* ── Floating Orbs (ambient light) ───────────────────────────── */
+.auth-orbs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: float var(--dur, 8s) ease-in-out infinite var(--delay, 0s);
+}
+
+[data-theme="night"] .orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(147,51,234,0.35) 0%, transparent 70%);
+  top: -150px; left: -100px;
+  --dur: 10s; --delay: 0s;
+}
+[data-theme="night"] .orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(168,85,247,0.25) 0%, transparent 70%);
+  bottom: -100px; right: -80px;
+  --dur: 12s; --delay: -4s;
+  animation-name: floatReverse;
+}
+[data-theme="night"] .orb-3 {
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(192,132,252,0.2) 0%, transparent 70%);
+  top: 40%; left: 60%;
+  --dur: 7s; --delay: -2s;
+}
+[data-theme="night"] .orb-4 {
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(124,58,237,0.3) 0%, transparent 70%);
+  top: 20%; right: 25%;
+  --dur: 9s; --delay: -6s;
+  animation-name: floatReverse;
+}
+
+[data-theme="day"] .orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(167,139,250,0.3) 0%, transparent 70%);
+  top: -150px; left: -100px;
+  --dur: 10s;
+}
+[data-theme="day"] .orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(196,181,253,0.35) 0%, transparent 70%);
+  bottom: -100px; right: -80px;
+  --dur: 12s; --delay: -4s;
+  animation-name: floatReverse;
+}
+[data-theme="day"] .orb-3 {
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(233,213,255,0.5) 0%, transparent 70%);
+  top: 40%; left: 60%;
+  --dur: 7s; --delay: -2s;
+}
+[data-theme="day"] .orb-4 {
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(216,180,254,0.4) 0%, transparent 70%);
+  top: 20%; right: 25%;
+  --dur: 9s; --delay: -6s;
+  animation-name: floatReverse;
+}
+
+/* ── Particle Field ───────────────────────────────────────────── */
+.auth-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--purple-400);
+  animation: particleDrift var(--dur, 7s) ease-in-out infinite var(--delay, 0s);
+}
+
+[data-theme="day"] .particle {
+  background: var(--purple-600);
+  opacity: 0.5;
+}
+
+/* ── Star Field (night only) ──────────────────────────────────── */
+.auth-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  animation: twinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+}
+
+/* ── Card ─────────────────────────────────────────────────────── */
+.auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xl);
+  padding: 44px 40px;
+  box-shadow: var(--shadow-lg), 0 0 80px rgba(147,51,234,0.18);
+
+  /* Initial state — hidden */
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  transition:
+    opacity 0.55s cubic-bezier(0.34,1.2,0.64,1),
+    transform 0.55s cubic-bezier(0.34,1.2,0.64,1),
+    background var(--transition-slow),
+    border-color var(--transition-slow),
+    box-shadow var(--transition-slow);
+}
+
+.auth-card--wide { max-width: 600px; }
+
+.auth-card--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── Shimmer border animation ─────────────────────────────────── */
+.auth-card-shimmer {
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-xl);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(168,85,247,0.6) 40%,
+    rgba(192,132,252,0.9) 50%,
+    rgba(168,85,247,0.6) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmerBorder 4s linear infinite;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: calc(var(--radius-xl) + 1px);
+}
+
+[data-theme="day"] .auth-card-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(109,40,217,0.4) 40%,
+    rgba(139,92,246,0.7) 50%,
+    rgba(109,40,217,0.4) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes shimmerBorder {
+  from { background-position: -200% center; }
+  to   { background-position: 200% center; }
+}
+
+/* ── Decorative line at bottom ────────────────────────────────── */
+.auth-deco-line {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: var(--grad-primary);
+  border-radius: var(--radius-full);
+  opacity: 0.5;
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* ── Auth Header ──────────────────────────────────────────────── */
+.auth-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.auth-logo-wrap {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 18px;
+}
+
+.auth-logo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--grad-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  box-shadow: 0 0 32px rgba(147,51,234,0.55), 0 0 64px rgba(147,51,234,0.25);
+  animation: pulseGlow 3s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-logo-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: conic-gradient(from 0deg, transparent, var(--purple-400), transparent 180deg) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation: rotateSlow 4s linear infinite;
+}
+
+.auth-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+
+/* ── Ethara.AI animated brand name ─────────────────────────────── */
+.auth-brand-name {
+  background: linear-gradient(
+    90deg,
+    #c084fc, #a855f7, #7c3aed, #6366f1, #818cf8, #c084fc, #a855f7
+  );
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: authBrandShimmer 3.5s linear infinite;
+  display: inline-block;
+  position: relative;
+}
+
+/* Blurred glow echo */
+.auth-brand-name::after {
+  content: 'Ethara.AI';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: blur(18px);
+  opacity: 0.5;
+  z-index: -1;
+  animation: authBrandShimmer 3.5s linear infinite;
+}
+
+@keyframes authBrandShimmer {
+  0%   { background-position: 0% center; }
+  100% { background-position: 300% center; }
+}
+
+/* "Dashboard by Akash Pandey" pill */
+.auth-brand-byline {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(99,102,241,0.12));
+  border: 1px solid rgba(168,85,247,0.35);
+  color: var(--purple-400);
+  margin-bottom: 10px;
+  margin-top: 2px;
+  animation: fadeIn 0.6s 0.3s ease both;
+}
+
+[data-theme="day"] .auth-brand-byline {
+  background: linear-gradient(135deg, rgba(109,40,217,0.09), rgba(79,70,229,0.06));
+  border-color: rgba(109,40,217,0.28);
+  color: #6d28d9;
+}
+
+.auth-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+}
+
+/* ── Staggered field entrance ─────────────────────────────────── */
+.auth-field {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.auth-card--visible .auth-field--1 { animation: slideUp 0.45s 0.15s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+.auth-card--visible .auth-field--2 { animation: slideUp 0.45s 0.22s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+.auth-card--visible .auth-field--3 { animation: slideUp 0.45s 0.29s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+.auth-card--visible .auth-field--4 { animation: slideUp 0.45s 0.36s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+.auth-card--visible .auth-field--5 { animation: slideUp 0.45s 0.43s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+.auth-card--visible .auth-field--6 { animation: slideUp 0.45s 0.50s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+.auth-card--visible .auth-field--7 { animation: slideUp 0.45s 0.57s cubic-bezier(0.34,1.2,0.64,1) forwards; }
+
+/* ── Input Wrap with icon ─────────────────────────────────────── */
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 1;
+  filter: saturate(0.7) brightness(0.8);
+  transition: filter var(--transition);
+}
+
+.auth-input {
+  padding-left: 44px !important;
+  font-family: var(--font-body);
+}
+
+.auth-input:focus ~ .input-icon,
+.input-wrap:focus-within .input-icon {
+  filter: saturate(1) brightness(1);
+}
+
+/* Focus glow line */
+.auth-input::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--grad-primary);
+  transition: width 0.3s ease;
+}
+
+/* ── Submit Button ────────────────────────────────────────────── */
+.auth-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 8px;
+  padding: 14px 24px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.auth-submit:hover::before {
+  transform: translateX(100%);
+}
+
+/* Loading state inside button */
+.btn-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* ── Alert ────────────────────────────────────────────────────── */
+.auth-alert {
+  margin-bottom: 20px;
+  animation: slideInLeft 0.3s ease;
+}
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.auth-footer a {
+  color: var(--purple-400);
+  font-weight: 700;
+  font-style: normal;
+  font-family: var(--font-display);
+  transition: color var(--transition);
+}
+
+.auth-footer a:hover { color: var(--purple-300); }
+
+/* ── 2-column grid for register ───────────────────────────────── */
+.auth-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 540px) {
+  .auth-grid-2 { grid-template-columns: 1fr; }
+  .auth-card { padding: 32px 24px; }
+  .auth-card--wide { max-width: 100%; }
+}

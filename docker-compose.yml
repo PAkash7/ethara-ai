@@ -1,0 +1,96 @@
+# docker compose (v2 format — no version key needed)
+
+# ─────────────────────────────────────────────────────────────
+# ProjectFlow — Docker Compose
+#
+#  Services:
+#    db       → PostgreSQL 15
+#    backend  → Django + Gunicorn (port 8000, internal only)
+#    frontend → React + Nginx (port 80, public)
+#
+#  Usage:
+#    cp .env.docker .env.docker.local   # edit your SECRET_KEY
+#    docker compose up --build
+# ─────────────────────────────────────────────────────────────
+
+services:
+
+  # ── PostgreSQL Database ──────────────────────────────────────
+  db:
+    image: postgres:15-alpine
+    container_name: projectflow_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       projectflow
+      POSTGRES_USER:     projectflow
+      POSTGRES_PASSWORD: projectflow_secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:     ["CMD-SHELL", "pg_isready -U projectflow"]
+      interval: 10s
+      timeout:  5s
+      retries:  5
+    networks:
+      - projectflow_net
+
+  # ── Django Backend ───────────────────────────────────────────
+  backend:
+    build:
+      context:    ./backend
+      dockerfile: Dockerfile
+    container_name: projectflow_backend
+    restart: unless-stopped
+    env_file: .env.docker
+    environment:
+      # Override database URL to use the postgres container
+      DATABASE_URL: postgres://projectflow:projectflow_secret@db:5432/projectflow
+      # Allow requests coming through Nginx
+      CORS_ALLOWED_ORIGINS: http://localhost,http://localhost:80
+      ALLOWED_HOSTS:        localhost,127.0.0.1,backend
+    depends_on:
+      db:
+        condition: service_healthy
+    # Backend is NOT exposed externally — Nginx proxies to it
+    expose:
+      - "8000"
+    volumes:
+      - static_files:/app/staticfiles
+    networks:
+      - projectflow_net
+    healthcheck:
+      # /api/auth/login/ returns 405 on GET (Method Not Allowed) = Django is running
+      test:     ["CMD", "curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://localhost:8000/api/auth/login/"]
+      interval: 30s
+      timeout:  10s
+      retries:  3
+      start_period: 25s
+
+  # ── React + Nginx Frontend ───────────────────────────────────
+  frontend:
+    build:
+      context:    ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Empty = relative URLs, Nginx proxies /api/ → backend
+        VITE_API_URL: ""
+    container_name: projectflow_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"       # Main app
+    depends_on:
+      - backend
+    networks:
+      - projectflow_net
+
+# ── Volumes ──────────────────────────────────────────────────
+volumes:
+  postgres_data:
+    driver: local
+  static_files:
+    driver: local
+
+# ── Network ──────────────────────────────────────────────────
+networks:
+  projectflow_net:
+    driver: bridge
