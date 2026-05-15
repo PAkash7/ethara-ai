@@ -119,6 +119,7 @@ CORS_ALLOWED_ORIGINS = config(
     cast=Csv()
 )
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 # ─────────────────────────────────────────────────────────────
 # REST FRAMEWORK
