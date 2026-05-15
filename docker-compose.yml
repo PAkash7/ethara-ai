@@ -17,17 +17,17 @@ services:
 
   # ── PostgreSQL Database ──────────────────────────────────────
   db:
-    image: postgres:15-alpine
+    image: postgres:16-alpine
     container_name: projectflow_db
     restart: unless-stopped
     environment:
-      POSTGRES_DB:       projectflow
-      POSTGRES_USER:     projectflow
-      POSTGRES_PASSWORD: projectflow_secret
+      POSTGRES_DB:       ${POSTGRES_DB:-projectflow}
+      POSTGRES_USER:     ${POSTGRES_USER:-projectflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-projectflow_secret}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test:     ["CMD-SHELL", "pg_isready -U projectflow"]
+      test:     ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-projectflow} -d ${POSTGRES_DB:-projectflow}"]
       interval: 10s
       timeout:  5s
       retries:  5
@@ -44,7 +44,7 @@ services:
     env_file: .env.docker
     environment:
       # Override database URL to use the postgres container
-      DATABASE_URL: postgres://projectflow:projectflow_secret@db:5432/projectflow
+      DATABASE_URL: postgres://${POSTGRES_USER:-projectflow}:${POSTGRES_PASSWORD:-projectflow_secret}@db:5432/${POSTGRES_DB:-projectflow}
       # Allow requests coming through Nginx
       CORS_ALLOWED_ORIGINS: http://localhost,http://localhost:80
       ALLOWED_HOSTS:        localhost,127.0.0.1,backend
@@ -59,8 +59,8 @@ services:
     networks:
       - projectflow_net
     healthcheck:
-      # /api/auth/login/ returns 405 on GET (Method Not Allowed) = Django is running
-      test:     ["CMD", "curl", "-s", "-o", "/dev/null", "-w", "%{http_code}", "http://localhost:8000/api/auth/login/"]
+      # /health/ endpoint is publicly accessible
+      test:     ["CMD", "curl", "-f", "http://localhost:8000/health/"]
       interval: 30s
       timeout:  10s
       retries:  3

@@ -27,10 +27,4 @@ RUN SECRET_KEY=build-phase-only-dummy-key \
 EXPOSE 8000
 
 # Entrypoint: run migrations then start Gunicorn
-CMD ["sh", "-c", "python manage.py migrate --noinput && \
-     gunicorn core.wsgi:application \
-       --bind 0.0.0.0:8000 \
-       --workers 2 \
-       --timeout 60 \
-       --access-logfile - \
-       --error-logfile -"]
+ENTRYPOINT ["/app/entrypoint.sh"]
