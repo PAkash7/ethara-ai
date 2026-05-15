@@ -4,12 +4,12 @@ A full-stack project management application built with **Django REST Framework**
 
 ## 🔗 Live URL
 
-> **Backend:** https://your-backend-domain.railway.app  
-> **Frontend:** https://your-frontend-domain.railway.app
+> **Backend:** [https://ethara-ai-production-47a7.up.railway.app/admin/login/?next=/admin/]  
+> **Frontend:** [https://earnest-passion-production-5f81.up.railway.app/login]
 
 ## 📦 GitHub Repository
 
-> https://github.com/your-username/project-manager-app
+> [https://github.com/PAkash7/ethara-ai]
 
 ---
 
