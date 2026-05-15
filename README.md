@@ -9,7 +9,7 @@ A full-stack project management application built with **Django REST Framework**
 
 ## 📦 GitHub Repository
 
-> https://github.com/your-username/project-manager-app
+> [https://github.com/PAkash7/ethara-ai]
 
 ---
 
